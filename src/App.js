@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Rule from './Rule'
+import { Button , Dropdown} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
+
+  const [componentList, setComponentList] = useState([]);
+  const [nextId, setNextId] = useState(0);
+
+  const addRule = () => {
+    setComponentList(prevList => [...prevList, { id: nextId }]);
+    setNextId(prevId => prevId + 1);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Rule App</h1>
+      <Button variant="primary" className="btn btn-primary" onClick={addRule}>Add Rule</Button>
+      <div className="rule-container">
+        {/* Map over the list to render multiple components */}
+        {componentList.map(componentData => (
+          <Rule key={componentData.id} id={componentData.id} independantVar="name" conditionComparator="=" conditionValue = ""/>
+        ))}
+      </div>
     </div>
   );
 }
