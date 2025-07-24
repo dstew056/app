@@ -1,0 +1,11 @@
+{
+  "Labs":{
+    "name":"Hemoglobin", 
+    "value": 14.2
+  },
+  "Medications":{
+    "name":"Metformin 500mg oral tablet",
+    "dose": "500",
+    "dateAdministered": "2024-03-20"
+  }
+}

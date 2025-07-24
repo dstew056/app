@@ -1,4 +1,20 @@
-[
-  { "value": "age", "label": "Age" },
-  { "value": "name", "label": "Name" }
-]
+{
+  "Labs":{
+    "name": {
+      "conditionValueType":"text"
+    },
+    "value": {
+      "conditionValueType":"number"
+    }
+  },
+  "Medications":{
+    "name": {
+      "conditionValueType":"text"
+    },
+    "dose": {
+      "conditionValueType":"number"
+    },
+    "dateAdministered":{
+      "conditionValueType":"date"}
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Rule from './Rule'
-import { Button , Dropdown} from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
       <div className="rule-container">
         {/* Map over the list to render multiple components */}
         {componentList.map(componentData => (
-          <Rule key={componentData.id} id={componentData.id} independantVar="name" conditionComparator="=" conditionValue = ""/>
+          <Rule key={componentData.id} id={componentData.id} section ="Labs" independantVar="name" conditionComparator="is exactly" conditionValue = ""/>
         ))}
       </div>
     </div>
