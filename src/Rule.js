@@ -6,7 +6,7 @@ import patientData from './data/patientData.json'
 
 function Rule(props) {
 
-  const [id] = useState(props.id);
+  const id = props.id;
   const [section,setSection] = useState(props.section);
   const [independantVar, setIndependantVar] = useState(props.independantVar);
   const [conditionComparator, setConditionComparator] = useState(props.conditionComparator);
@@ -137,6 +137,7 @@ function Rule(props) {
         <p>{output}</p>
       </div>
       <Button variant="primary" className="btn btn-primary" onClick={handleCalculate}>Calculate</Button>
+      <Button variant="danger" className="btn btn-danger" onClick={() => props.deleteRule(id)}>Delete Rule</Button>
     </div>
   )
  
