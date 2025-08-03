@@ -8,9 +8,7 @@
     }
   },
   "Medications":{
-    "name": {
-      "conditionValueType":"text"
-    },
+    
     "dose": {
       "conditionValueType":"number"
     },

@@ -1,6 +1,6 @@
 {
   "number":[">",">=","=","<=","<"],
   "text":["contains","is exactly"],
-  "date":["before","exactly","after"],
+  "date":["is before","is exactly","is after"],
   "boolean":["="]
 }

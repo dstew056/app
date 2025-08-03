@@ -11,6 +11,7 @@ function Rule(props) {
   const [independantVar, setIndependantVar] = useState(props.independantVar);
   const [conditionComparator, setConditionComparator] = useState(props.conditionComparator);
   const [conditionValue, setConditionValue] = useState(props.conditionValue);
+  const [output, setOutput] = useState("");
   
   const renderInputField = () => {
     const inputType = ruleTypes?.[section]?.[independantVar]?.conditionValueType || 'text';
@@ -24,26 +25,73 @@ function Rule(props) {
     )
   }
 
-  const renderOutput = () => {
-    switch(ruleTypes[section][independantVar].conditionValueType){
+  const calculateOutput = (target,cvt) => {
+    switch(cvt){
 
       case "text":
-        
-        switch(conditionValue){
+        switch(conditionComparator){
           case "contains":
-            return 
+            return target.includes(conditionValue);
+          case "is exactly":
+            return target === conditionValue;
+          default:
+            return false;
         }
-        break;
+      case "number":
+        target= +target
+        const cv = +conditionValue
+        console.log(conditionComparator)
+        switch(conditionComparator){
+          case ">":
+            return target>cv;
+          case ">=":
+            return target>=cv;
+          case "=":
+            return target===cv;
+          case "<=":
+            return target<=cv;
+          case "<":
+            return target<cv;
+          default:
+            console.log("default");
+            return false;
+        }
+      case "date":
+        target= new Date(target);
+        const cvDate = new Date(conditionValue);
+        switch(conditionComparator){
+          case "is before":
+            return target<cvDate;
+          case "is exactly":
+            return target===cvDate;
+          case "is after":
+            return target>cvDate;
+          default:
+            return false;
+        }
       default:
+        return false;
     }
-    
+  }
+
+  const handleCalculate = () => {
+    const target = patientData[section][independantVar]
+    const cvt = ruleTypes[section][independantVar].conditionValueType
+    console.log(calculateOutput(target,cvt))
+    setOutput(calculateOutput(target,cvt).toString())
   }
 
   useEffect(()=>{
     setConditionValue("")
     setIndependantVar(Object.keys(ruleTypes[section])[0]);
-    //setConditionComparatorOptions(conditionComparators[ruleTypes[section][Object.keys(ruleTypes[section])[0]].conditionValueType]);
+    setConditionComparator(conditionComparators[ruleTypes[section][Object.keys(ruleTypes[section])[0]].conditionValueType][0])
   },[section]);
+
+  useEffect(()=>{
+    setConditionValue("")
+    console.log(conditionComparators[ruleTypes?.[section]?.[independantVar]?.conditionValueType || "text"][0])
+    setConditionComparator(conditionComparators[ruleTypes?.[section]?.[independantVar]?.conditionValueType || "text"][0])
+  },[independantVar, section]);
 
   return (
     <div className="container">
@@ -86,8 +134,9 @@ function Rule(props) {
           ))}
         </select>
         {renderInputField()}
+        <p>{output}</p>
       </div>
-      <Button variant="primary" className="btn btn-primary" onClick={renderOutput()}>Calculate</Button>
+      <Button variant="primary" className="btn btn-primary" onClick={handleCalculate}>Calculate</Button>
     </div>
   )
  
