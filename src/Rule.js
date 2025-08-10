@@ -9,8 +9,8 @@ function Rule(props) {
   const id = props.id;
   const [section,setSection] = useState(props.section);
   const [independantVar, setIndependantVar] = useState(props.independantVar);
-  const [conditionComparator, setConditionComparator] = useState(props.conditionComparator);
-  const [conditionValue, setConditionValue] = useState(props.conditionValue);
+  const [conditionComparator, setConditionComparator] = useState("");
+  const [conditionValue, setConditionValue] = useState("");
   const [output, setOutput] = useState("");
   
   const renderInputField = () => {

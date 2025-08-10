@@ -2,21 +2,21 @@ import React, { useState } from 'react';
 import Rule from './Rule'
 import { Button, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ruleTypes from './data/ruleTypes.json'
+import CreateRule from './CreateRule';
 
 function App() {
 
-  const [componentList, setComponentList] = useState([]);
-  const [nextId, setNextId] = useState(0);
+  const [ruleList, setRuleList] = useState([]);
+  const [nextRuleId, setNextRuleId] = useState(0);
 
-  const addRule = () => {
-    setComponentList(prevList => [...prevList, { id: nextId }]);
-    setNextId(prevId => prevId + 1);
-    console.log(componentList)
+  const addRule = (section) => {
+    setRuleList(prevList => [...prevList, { id: nextRuleId, section: section }]);
+    setNextRuleId(prevId => prevId + 1);
   }
 
   const deleteRule = (id) => {
-    console.log("de")
-    setComponentList(prevList => {
+    setRuleList(prevList => {
       return prevList.filter(rule => rule.id!==id)
     })
   }
@@ -24,12 +24,17 @@ function App() {
   return (
     <div>
       <h1>Rule App</h1>
-      <Button variant="primary" className="btn btn-primary" onClick={addRule}>Add Rule</Button>
+      <CreateRule type="Labs" onClick={addRule}/>
+      <CreateRule type="Medications" onClick={addRule}/>
+      {/* {Object.keys(ruleTypes).map(ruletype => (
+        <CreateRule key={ruletype.key} onClick={addRule}/>
+      ))} */}
+      {/* <Button variant="primary" className="btn btn-primary" onClick={addRule}>Add Rule</Button> */}
       <div className="rule-container">
         {/* Map over the list to render multiple components */}
-        {componentList.map(componentData => (
-          <div key={componentData.id}>
-            <Rule key={componentData.id} id={componentData.id} section ="Labs" independantVar="name" conditionComparator="is exactly" conditionValue = "" deleteRule={deleteRule}/>
+        {ruleList.map(ruleData => (
+          <div key={ruleData.id}>
+            <Rule key={ruleData.id} id={ruleData.id} section={ruleData.section} deleteRule={deleteRule}/>
           </div>
         ))}
       </div>
