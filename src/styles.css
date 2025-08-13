@@ -1,0 +1,4 @@
+.ruleButtonsContainer{
+  display: flex;
+  flex-direction: row;
+}

@@ -3,7 +3,7 @@ import Rule from './Rule'
 import { Button, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ruleTypes from './data/ruleTypes.json'
-import CreateRule from './CreateRule';
+import CreateRuleModal from './CreateRuleModal';
 
 function App() {
 
@@ -24,8 +24,7 @@ function App() {
   return (
     <div>
       <h1>Rule App</h1>
-      <CreateRule type="Labs" onClick={addRule}/>
-      <CreateRule type="Medications" onClick={addRule}/>
+      <CreateRuleModal addRule={addRule}/>
       {/* {Object.keys(ruleTypes).map(ruletype => (
         <CreateRule key={ruletype.key} onClick={addRule}/>
       ))} */}

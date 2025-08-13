@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from 'react-bootstrap';
 import ruleTypes from './data/ruleTypes.json'
 import conditionComparators from './data/conditionComparators.json'
 import patientData from './data/patientData.json'
+import './styles.css'
 
 function Rule(props) {
 
@@ -25,9 +26,9 @@ function Rule(props) {
     )
   }
 
-  const calculateOutput = (target,cvt) => {
+  const calculateOutput = useCallback((target,cvt) => {
+    if (conditionValue === ""){ return false};
     switch(cvt){
-
       case "text":
         switch(conditionComparator){
           case "contains":
@@ -40,7 +41,6 @@ function Rule(props) {
       case "number":
         target= +target
         const cv = +conditionValue
-        console.log(conditionComparator)
         switch(conditionComparator){
           case ">":
             return target>cv;
@@ -53,7 +53,6 @@ function Rule(props) {
           case "<":
             return target<cv;
           default:
-            console.log("default");
             return false;
         }
       case "date":
@@ -72,14 +71,14 @@ function Rule(props) {
       default:
         return false;
     }
-  }
+  },[conditionComparator,conditionValue]);
 
-  const handleCalculate = () => {
+  useEffect(() => {
     const target = patientData[section][independantVar]
-    const cvt = ruleTypes[section][independantVar].conditionValueType
-    console.log(calculateOutput(target,cvt))
+    console.log(independantVar)
+    const cvt = ruleTypes?.[section]?.[independantVar]?.conditionValueType || "text"
     setOutput(calculateOutput(target,cvt).toString())
-  }
+  },[section,independantVar,conditionValue,calculateOutput]);
 
   useEffect(()=>{
     setConditionValue("")
@@ -89,14 +88,14 @@ function Rule(props) {
 
   useEffect(()=>{
     setConditionValue("")
-    console.log(conditionComparators[ruleTypes?.[section]?.[independantVar]?.conditionValueType || "text"][0])
+    /* console.log(conditionComparators[ruleTypes?.[section]?.[independantVar]?.conditionValueType || "text"][0]) */
     setConditionComparator(conditionComparators[ruleTypes?.[section]?.[independantVar]?.conditionValueType || "text"][0])
   },[independantVar, section]);
 
   return (
     <div className="container">
-      <h2>I am rule {id} for {independantVar} {conditionComparator} {conditionValue} in {section}</h2>
-      <div className="dropdown">
+      {/* <h2>I am rule {id} for {independantVar} {conditionComparator} {conditionValue} in {section}</h2> */}
+      <div className="ruleButtonsContainer">
         <select
           className="form-select"
           value={section}
@@ -136,7 +135,7 @@ function Rule(props) {
         {renderInputField()}
         <p>{output}</p>
       </div>
-      <Button variant="primary" className="btn btn-primary" onClick={handleCalculate}>Calculate</Button>
+      {/* <Button variant="primary" className="btn btn-primary" onClick={handleCalculate}>Calculate</Button> */}
       <Button variant="danger" className="btn btn-danger" onClick={() => props.deleteRule(id)}>Delete Rule</Button>
     </div>
   )
