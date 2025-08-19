@@ -11,7 +11,7 @@ function CreateRule(props) {
       props.onClick(type);
       props.close(); //Close the parent using a function that is passed in props (this is the whole reason we need a custom button)
     }
-    }>Create {type}</Button>
+    }>Create {type} Rule</Button>
   );
 };
 

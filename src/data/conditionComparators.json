@@ -1,6 +1,7 @@
 {
   "number":[">",">=","=","<=","<"],
-  "text":["contains","is exactly"],
+  "autocompleteText":["contains","contains (case sensitive)","is exactly"],
+  "text":["contains","contains (case sensitive)","is exactly"],
   "date":["is before","is exactly","is after"],
   "boolean":["="]
 }

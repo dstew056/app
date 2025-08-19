@@ -8,7 +8,10 @@
     }
   },
   "Medications":{
-    
+    "name":{
+      "conditionValueType":"autocompleteText",
+      "autocompleteValues":"drugNames"
+    },
     "dose": {
       "conditionValueType":"number"
     },
