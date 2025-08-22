@@ -1,7 +1,8 @@
 {
   "Labs":{
     "name":"Hemoglobin", 
-    "value": 14.2
+    "value": 14.2,
+    "isAbnormal":true
   },
   "Medications":{
     "name":"Metformin 500mg oral tablet",

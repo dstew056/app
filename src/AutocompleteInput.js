@@ -3,7 +3,7 @@ import './styles.css'
 
 function AutocompleteInput(props) {
   const options = props.options;
-  const setConditionValue = props.setConditionValue
+  const setValue = props.setValue
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
 
@@ -11,7 +11,7 @@ function AutocompleteInput(props) {
   const handleInputChange = (e) => {
     const value = e.target.value;
     setInputValue(value);
-    setConditionValue(value);
+    setValue(value);
 
     // Filter suggestions based on the input
     if (value.length > 0) {

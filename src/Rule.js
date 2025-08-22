@@ -10,17 +10,18 @@ import './styles.css'
 function Rule(props) {
 
   const id = props.id;
+  const sendOutput = props.sendOutput
   const [section,setSection] = useState(props.section);
   const [independentVar, setindependentVar] = useState(props.independentVar);
   const [conditionComparator, setConditionComparator] = useState("");
   const [conditionValue, setConditionValue] = useState("");
-  const [output, setOutput] = useState("");
+  const [output, setOutput] = useState("");//boolean, display output value if true
+  const [outputValue, setOutputValue] = useState("");//value to be output
 
   const renderInputField = () => {
     const inputType = ruleTypes?.[section]?.[independentVar]?.conditionValueType || 'text';
     if (inputType === "autocompleteText"){
-      console.log(conditionValue);
-      return(<AutocompleteInput options={autocompleteValues[ruleTypes?.[section]?.[independentVar]?.autocompleteValues]} setConditionValue={setConditionValue}/>)
+      return(<AutocompleteInput options={autocompleteValues[ruleTypes?.[section]?.[independentVar]?.autocompleteValues]} setValue={setConditionValue}/>)
     }else{
       return(
         <input 
@@ -84,11 +85,16 @@ function Rule(props) {
   },[conditionComparator,conditionValue]);
 
   useEffect(() => {
+    console.log(independentVar);
     const target = patientData[section][independentVar]
     const cvt = ruleTypes?.[section]?.[independentVar]?.conditionValueType || "text"
     setOutput(calculateOutput(target,cvt).toString())
   },[section,independentVar,conditionValue,calculateOutput]);
 
+  useEffect(() => {
+    sendOutput(id,output,outputValue)
+  },[output,outputValue,id,sendOutput]);
+  
   useEffect(()=>{
     setConditionValue("")
     setindependentVar(Object.keys(ruleTypes[section])[0]);
@@ -119,6 +125,7 @@ function Rule(props) {
           ))}
         </select>
         <h3>&nbsp;&nbsp;if&nbsp;&nbsp;</h3>
+        {/* <AutocompleteInput options={Object.keys(ruleTypes[section])} setValue={setindependentVar}/> */}
         <select
           className="form-select"
           value={independentVar}
@@ -144,6 +151,13 @@ function Rule(props) {
           ))}
         </select>
         {renderInputField()}
+        <h3>&nbsp;then output&nbsp;</h3>
+        <input 
+            type="text"
+            value={outputValue}
+            onChange={ (e) => setOutputValue(e.target.value)}
+            style={{ width: '200px' }}
+          />
         <p>{output}</p>
       </div>
       {/* <Button variant="primary" className="btn btn-primary" onClick={handleCalculate}>Calculate</Button> */}
