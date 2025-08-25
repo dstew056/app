@@ -60,7 +60,7 @@ function App() {
         ))}
       </div>
       <br/>
-      <h4>Output:</h4>
+      <h4 className="output-container-label">Output:</h4>
       <div className='output-container'>
         {outputList.map(outputData => (
           <div key={outputData.id}>

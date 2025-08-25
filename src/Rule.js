@@ -26,6 +26,7 @@ function Rule(props) {
     }else{
       return(
         <input 
+            className="input-container"
             type={inputType}
             value={conditionValue}
             onChange={ (e) => setConditionValue(e.target.value)}
@@ -112,10 +113,9 @@ function Rule(props) {
       <div className="ruleButtonsContainer">
         <h3>In&nbsp;&nbsp;</h3>
         <select
-          className="form-select"
+          className="dropdown"
           value={section}
           onChange={ (e) => setSection(e.target.value)}
-          style={{ width: '200px' }}
         >
           {Object.keys(ruleTypes).map((option) => (
             <option key={option} value={option}>
@@ -126,10 +126,9 @@ function Rule(props) {
         <h3>&nbsp;&nbsp;if&nbsp;&nbsp;</h3>
         {/* <AutocompleteInput options={Object.keys(ruleTypes[section])} setValue={setindependentVar}/> */}
         <select
-          className="form-select"
+          className="dropdown"
           value={independentVar}
           onChange={ (e) => setindependentVar(e.target.value)}
-          style={{ width: '200px' }}
         >
           {Object.keys(ruleTypes[section]).map((option) => (
             <option key={option} value={option}>
@@ -138,10 +137,9 @@ function Rule(props) {
           ))}
         </select>
         <select
-          className="form-select"
+          className="dropdown"
           value={conditionComparator}
           onChange={ (e) => setConditionComparator(e.target.value)}
-          style={{ width: '200px' }}
         >
           {conditionComparators[ruleTypes?.[section]?.[independentVar]?.conditionValueType || "text"].map((option) => (
             <option key={option} value={option}>
@@ -150,18 +148,22 @@ function Rule(props) {
           ))}
         </select>
         {renderInputField()}
-        <h3>&nbsp;then output&nbsp;</h3>
+        <h3>&nbsp; output&nbsp;</h3> 
         <input 
+          className="input-container"
           type="text"
           value={outputValue}
           onChange={ (e) => setOutputValue(e.target.value)}
           style={{ width: '200px' }}
         />
-        <input
-          type="color"
-          value={outputColor}
-          onChange={(e) => setOutputColor(e.target.value)}
-        />
+        <div>
+          <label>colour:</label>
+          <input
+            type="color"
+            value={outputColor}
+            onChange={(e) => setOutputColor(e.target.value)}
+          />
+        </div>
         {/* <p>{output}</p> */}
       </div>
       {/* <Button variant="primary" className="btn btn-primary" onClick={handleCalculate}>Calculate</Button> */}

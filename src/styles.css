@@ -1,15 +1,31 @@
 .ruleButtonsContainer{
+  position: relative;
   display: flex;
   flex-direction: row;
 }
 
+.dropdown{
+  width: 200px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
 .autocomplete-container {
   position: relative;
-  width: 300px;
 }
 
 .autocomplete-container input {
-  width: 100%;
+  width: 200px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.input-container{
+  width: 200px;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -47,4 +63,15 @@
 
 .outputLinefalse{
   display:none
+}
+
+.output-container{
+  width: 50%;
+  margin: 0 auto;
+  border: 2px solid black;
+}
+
+.output-container-label{
+  width: 50%;
+  margin: 0 auto;
 }
