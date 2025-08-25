@@ -17,6 +17,7 @@ function Rule(props) {
   const [conditionValue, setConditionValue] = useState("");
   const [output, setOutput] = useState("");//boolean, display output value if true
   const [outputValue, setOutputValue] = useState("");//value to be output
+  const [outputColor,setOutputColor] = useState("#000000");
 
   const renderInputField = () => {
     const inputType = ruleTypes?.[section]?.[independentVar]?.conditionValueType || 'text';
@@ -85,16 +86,15 @@ function Rule(props) {
   },[conditionComparator,conditionValue]);
 
   useEffect(() => {
-    console.log(independentVar);
     const target = patientData[section][independentVar]
     const cvt = ruleTypes?.[section]?.[independentVar]?.conditionValueType || "text"
     setOutput(calculateOutput(target,cvt).toString())
   },[section,independentVar,conditionValue,calculateOutput]);
 
   useEffect(() => {
-    sendOutput(id,output,outputValue)
-  },[output,outputValue,id,sendOutput]);
-  
+    sendOutput(id,output,outputValue,outputColor)
+  },[output,outputValue,id,outputColor,sendOutput]);
+
   useEffect(()=>{
     setConditionValue("")
     setindependentVar(Object.keys(ruleTypes[section])[0]);
@@ -103,7 +103,6 @@ function Rule(props) {
 
   useEffect(()=>{
     setConditionValue("")
-    /* console.log(conditionComparators[ruleTypes?.[section]?.[independentVar]?.conditionValueType || "text"][0]) */
     setConditionComparator(conditionComparators[ruleTypes?.[section]?.[independentVar]?.conditionValueType || "text"][0])
   },[independentVar, section]);
 
@@ -153,12 +152,17 @@ function Rule(props) {
         {renderInputField()}
         <h3>&nbsp;then output&nbsp;</h3>
         <input 
-            type="text"
-            value={outputValue}
-            onChange={ (e) => setOutputValue(e.target.value)}
-            style={{ width: '200px' }}
-          />
-        <p>{output}</p>
+          type="text"
+          value={outputValue}
+          onChange={ (e) => setOutputValue(e.target.value)}
+          style={{ width: '200px' }}
+        />
+        <input
+          type="color"
+          value={outputColor}
+          onChange={(e) => setOutputColor(e.target.value)}
+        />
+        {/* <p>{output}</p> */}
       </div>
       {/* <Button variant="primary" className="btn btn-primary" onClick={handleCalculate}>Calculate</Button> */}
       <Button variant="danger" className="btn btn-danger" onClick={() => props.deleteRule(id)}>Delete Rule</Button>

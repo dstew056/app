@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Rule from './Rule'
 import { Button, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -13,8 +13,9 @@ function App() {
 
   const addRule = (section) => {
     setRuleList(prevList => [...prevList, { id: nextRuleId, section: section }]);
-    setOutputList(prevList => [...prevList, {id: nextRuleId, output: false, outputValue: ""}]);
+    setOutputList(prevList => [...prevList, {id: nextRuleId, output: false, outputValue: "", outputColor: "#00000"}]);
     setNextRuleId(prevId => prevId + 1);
+    console.log(outputList)
   }
 
   const deleteRule = (id) => {
@@ -26,16 +27,16 @@ function App() {
     })
   }
 
-  const sendOutput = (id, output, outputValue) => {
+  const sendOutput = useCallback((id, output, outputValue, outputColor) => {
     setOutputList(prevList => {
       return prevList.map(rule => {
         if (rule.id===id){
-          return {id,output,outputValue}
+          return {id,output,outputValue, outputColor}
         }else{return rule}
       }
       )
     })
-  }
+  },[]);
 
   return (
     <div>
@@ -58,10 +59,19 @@ function App() {
           </div>
         ))}
       </div>
-      <div className='outputContainer'>
+      <br/>
+      <h4>Output:</h4>
+      <div className='output-container'>
         {outputList.map(outputData => (
           <div key={outputData.id}>
-            <p key={outputData.id} id={outputData.id} class={"outputLine"+outputData.output}>{outputData.outputValue}</p>
+            <p 
+              key={outputData.id} 
+              id={outputData.id} 
+              className={"outputLine"+outputData.output} 
+              style={{color: outputData.outputColor}/* +outputData.outputColor */}
+            >
+              {outputData.outputValue}
+            </p>
           </div>
         ))}
       </div>
