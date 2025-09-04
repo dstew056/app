@@ -2,6 +2,11 @@
   position: relative;
   display: flex;
   flex-direction: row;
+  align-items: center;
+}
+
+.ruleButtonsContainer h3{
+  padding: 0px 10px;
 }
 
 .dropdown{

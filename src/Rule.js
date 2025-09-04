@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button,  } from 'react-bootstrap';
 import ruleTypes from './data/ruleTypes.json'
 import conditionComparators from './data/conditionComparators.json'
 import patientData from './data/patientData.json'
@@ -38,8 +38,6 @@ function Rule(props) {
 
   const calculateOutput = useCallback((target,cvt) => {
     if (conditionValue === ""){ return false};
-    console.log(target)
-    console.log(conditionValue)
     switch(cvt){
       case "text":
       case "autocompleteText":
@@ -113,7 +111,7 @@ function Rule(props) {
     <div className="container">
       {/* <h2>I am rule {id} for {independentVar} {conditionComparator} {conditionValue} in {section}</h2> */}
       <div className="ruleButtonsContainer">
-        <h3>In&nbsp;&nbsp;</h3>
+        <h3>In</h3>
         <select
           className="dropdown"
           value={section}
@@ -125,7 +123,7 @@ function Rule(props) {
             </option>
           ))}
         </select>
-        <h3>&nbsp;&nbsp;if&nbsp;&nbsp;</h3>
+        <h3>if</h3>
         {/* <AutocompleteInput options={Object.keys(ruleTypes[section])} setValue={setindependentVar}/> */}
         <select
           className="dropdown"
@@ -150,7 +148,7 @@ function Rule(props) {
           ))}
         </select>
         {renderInputField()}
-        <h3>&nbsp; output&nbsp;</h3> 
+        <h3>output</h3> 
         <input 
           className="input-container"
           type="text"
