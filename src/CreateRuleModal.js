@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import CreateRule from './CreateRule';
+import ruleTypes from './data/ruleTypes.json'
 
 function CreateRuleModal(props) {
   const [show, setShow] = useState(false);
@@ -18,9 +19,12 @@ function CreateRuleModal(props) {
         <Modal.Header closeButton>
           <Modal.Title>Create Rule</Modal.Title>
         </Modal.Header>
-        <Modal.Body>      
-          <CreateRule type="Labs" onClick={props.addRule} close={handleClose}/>
-          <CreateRule type="Medications" onClick={props.addRule} close={handleClose}/>
+        <Modal.Body>
+          {Object.keys(ruleTypes).map(section=>(
+            <CreateRule type={section} onClick={props.addRule} close={handleClose}/>
+          ))}
+          {/* <CreateRule type="Labs" onClick={props.addRule} close={handleClose}/>
+          <CreateRule type="Medications" onClick={props.addRule} close={handleClose}/> */}
         </Modal.Body>
       </Modal>
     </div>
