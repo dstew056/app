@@ -1,21 +1,132 @@
 {
-  "Labs":{
-    "name": {
-      "conditionValueType":"text"
+    "Labs": {
+        "name": {
+            "conditionValueType": "text"
+        },
+        "shortname": {
+            "conditionValueType": "text"
+        },
+        "value": {
+            "conditionValueType": "number"
+        },
+        "range": {
+            "conditionValueType": "text"
+        },
+        "units": {
+            "conditionValueType": "text"
+        },
+        "loincCode": {
+            "conditionValueType": "text"
+        },
+        "datetime": {
+            "conditionValueType": "text"
+        },
+        "isAbnormal": {
+            "conditionValueType": "boolean"
+        }
     },
-    "value": {
-      "conditionValueType":"number"
+    "Medications": {
+        "name": {
+            "conditionValueType": "autocompleteText",
+            "autocompleteValues": "drugNames"
+        },
+        "dose": {
+            "conditionValueType": "number"
+        },
+        "dateAdministered": {
+            "conditionValueType": "date"
+        },
+        "format": {
+            "conditionValueType": "text"
+        },
+        "duration": {
+            "conditionValueType": "text"
+        }
+    },
+    "Allergies": {
+        "name": {
+            "conditionValueType": "text"
+        },
+        "severity": {
+            "conditionValueType": "text"
+        },
+        "dateRecorded": {
+            "conditionValueType": "date"
+        }
+    },
+    "Notes": {
+        "datetime": {
+            "conditionValueType": "text"
+        },
+        "author": {
+            "conditionValueType": "text"
+        },
+        "type": {
+            "conditionValueType": "text"
+        },
+        "content": {
+            "conditionValueType": "longText"
+        }
+    },
+    "Conditions": {
+        "name": {
+            "conditionValueType": "text"
+        },
+        "icd10": {
+            "conditionValueType": "text"
+        },
+        "datetime": {
+            "conditionValueType": "text"
+        }
+    },
+    "Diagnoses": {
+        "name": {
+            "conditionValueType": "text"
+        },
+        "icd10": {
+            "conditionValueType": "text"
+        },
+        "datetime": {
+            "conditionValueType": "text"
+        }
+    },
+    "Procedures": {
+        "name": {
+            "conditionValueType": "text"
+        },
+        "icd10": {
+            "conditionValueType": "text"
+        },
+        "datetime": {
+            "conditionValueType": "text"
+        }
+    },
+    "Imaging": {
+        "name": {
+            "conditionValueType": "text"
+        },
+        "icd10": {
+            "conditionValueType": "text"
+        },
+        "datetime": {
+            "conditionValueType": "text"
+        },
+        "imageUrl": {
+            "conditionValueType": "text"
+        }
+    },
+    "Miscellaneous": {
+        "name": {
+            "conditionValueType": "text"
+        },
+        "icd10": {
+            "conditionValueType": "text"
+        },
+        "datetime": {
+            "conditionValueType": "text"
+        },
+        "imageUrl": {
+            "conditionValueType": "text"
+        }
     }
-  },
-  "Medications":{
-    "name":{
-      "conditionValueType":"autocompleteText",
-      "autocompleteValues":"drugNames"
-    },
-    "dose": {
-      "conditionValueType":"number"
-    },
-    "dateAdministered":{
-      "conditionValueType":"date"}
-  }
 }

@@ -38,6 +38,8 @@ function Rule(props) {
 
   const calculateOutput = useCallback((target,cvt) => {
     if (conditionValue === ""){ return false};
+    console.log(target)
+    console.log(conditionValue)
     switch(cvt){
       case "text":
       case "autocompleteText":
@@ -87,9 +89,9 @@ function Rule(props) {
   },[conditionComparator,conditionValue]);
 
   useEffect(() => {
-    const target = patientData[section][independentVar]
+    const targets = patientData?.[section].map(subarray => subarray?.[independentVar] || "") || []
     const cvt = ruleTypes?.[section]?.[independentVar]?.conditionValueType || "text"
-    setOutput(calculateOutput(target,cvt).toString())
+    setOutput(targets.map(target => calculateOutput(target,cvt)).some(value=>value===true))
   },[section,independentVar,conditionValue,calculateOutput]);
 
   useEffect(() => {

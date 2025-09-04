@@ -1,12 +1,85 @@
 {
-  "Labs":{
-    "name":"Hemoglobin", 
-    "value": 14.2,
-    "isAbnormal":true
-  },
-  "Medications":{
-    "name":"Metformin 500mg oral tablet",
-    "dose": "500",
-    "dateAdministered": "2024-03-20"
-  }
+    "Labs": [
+        {
+            "name": "Hemoglobin",
+            "shortname": "Hgb",
+            "value": 14.2,
+            "range": "12-16",
+            "units": "g/dL",
+            "loincCode": "718-7",
+            "datetime": "2024-03-20",
+            "isAbnormal": false
+        },
+        {
+            "name": "BMP",
+            "shortname": "BMP",
+            "value": 15.2,
+            "range": "2-24",
+            "units": "g/dL",
+            "loincCode": "719-7",
+            "datetime": "2024-03-25",
+            "isAbnormal": false
+        }
+    ],
+    "Medications": [
+        {
+            "name": "Metformin 500mg oral tablet",
+            "dose": "500",
+            "format": "tablet",
+            "dateAdministered": "2024-03-20",
+            "duration": "continuous"
+        }
+    ],
+    "Allergies": [
+        {
+            "name": "Penicillin",
+            "severity": "severe",
+            "dateRecorded": "2024-01-15"
+        }
+    ],
+    "Notes": [
+        {
+            "datetime": "2024-03-20",
+            "author": "Dr. Smith",
+            "type": "SOAP",
+            "content": "Patient presents with elevated blood sugar and complaints of increased thirst. A1C remains elevated despite current medication regimen."
+        }
+    ],
+    "Conditions": [
+        {
+            "name": "Type 2 Diabetes",
+            "icd10": "E11.9",
+            "datetime": "2024-01-01"
+        }
+    ],
+    "Diagnoses": [
+        {
+            "name": "Hypertension",
+            "icd10": "I10",
+            "datetime": "2024-02-15"
+        }
+    ],
+    "Procedures": [
+        {
+            "name": "Appendectomy",
+            "icd10": "K35",
+            "datetime": "2024-03-01"
+        }
+    ],
+    "Imaging": [
+        {
+            "name": "Chest X-Ray",
+            "icd10": "R91",
+            "datetime": "2024-03-10",
+            "imageUrl": "path/to/image"
+        }
+    ],
+    "Miscellaneous": [
+        {
+            "name": "abbott",
+            "icd10": "R91",
+            "datetime": "2024-03-10",
+            "imageUrl": "path/to/image"
+        }
+    ]
 }
