@@ -16,7 +16,8 @@
             "conditionValueType": "text"
         },
         "loincCode": {
-            "conditionValueType": "text"
+            "conditionValueType": "autocompleteText",
+            "autocompleteValues": "loincCodes"
         },
         "datetime": {
             "conditionValueType": "text"
@@ -73,10 +74,11 @@
             "conditionValueType": "text"
         },
         "icd10": {
-            "conditionValueType": "text"
+            "conditionValueType": "autocompleteText",
+            "autocompleteValues": "icd10Codes"
         },
         "datetime": {
-            "conditionValueType": "text"
+            "conditionValueType": "date"
         }
     },
     "Diagnoses": {
@@ -84,10 +86,11 @@
             "conditionValueType": "text"
         },
         "icd10": {
-            "conditionValueType": "text"
+            "conditionValueType": "autocompleteText",
+            "autocompleteValues": "icd10Codes"
         },
         "datetime": {
-            "conditionValueType": "text"
+            "conditionValueType": "date"
         }
     },
     "Procedures": {
@@ -95,10 +98,11 @@
             "conditionValueType": "text"
         },
         "icd10": {
-            "conditionValueType": "text"
+            "conditionValueType": "autocompleteText",
+            "autocompleteValues": "icd10Codes"
         },
         "datetime": {
-            "conditionValueType": "text"
+            "conditionValueType": "date"
         }
     },
     "Imaging": {
@@ -106,10 +110,11 @@
             "conditionValueType": "text"
         },
         "icd10": {
-            "conditionValueType": "text"
+            "conditionValueType": "autocompleteText",
+            "autocompleteValues": "icd10Codes"
         },
         "datetime": {
-            "conditionValueType": "text"
+            "conditionValueType": "date"
         },
         "imageUrl": {
             "conditionValueType": "text"
@@ -120,10 +125,11 @@
             "conditionValueType": "text"
         },
         "icd10": {
-            "conditionValueType": "text"
+            "conditionValueType": "autocompleteText",
+            "autocompleteValues": "icd10Codes"
         },
         "datetime": {
-            "conditionValueType": "text"
+            "conditionValueType": "date"
         },
         "imageUrl": {
             "conditionValueType": "text"

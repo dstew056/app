@@ -3,15 +3,15 @@ import {Button} from 'react-bootstrap';
 
 function CreateRule(props) {
 
-  const type = props.type;
+  const section = props.section;
 
   return(
     <Button variant="primary" 
     onClick={() => {
-      props.onClick(type);
+      props.onClick(section);
       props.close(); //Close the parent using a function that is passed in props (this is the whole reason we need a custom button)
     }
-    }>Create {type} Rule</Button>
+    }>Create {section} Rule</Button>
   );
 };
 

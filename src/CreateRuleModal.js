@@ -12,7 +12,7 @@ function CreateRuleModal(props) {
   return (
     <div>
       <Button variant="primary" onClick={handleShow}>
-        Add a New Rule
+        {props.text}
       </Button>
 
       <Modal show={show} onHide={handleClose}>
@@ -21,7 +21,7 @@ function CreateRuleModal(props) {
         </Modal.Header>
         <Modal.Body>
           {Object.keys(ruleTypes).map(section=>(
-            <CreateRule type={section} onClick={props.addRule} close={handleClose}/>
+            <CreateRule key={props.type + section} section={section} onClick={props.addRule} close={handleClose}/>
           ))}
           {/* <CreateRule type="Labs" onClick={props.addRule} close={handleClose}/>
           <CreateRule type="Medications" onClick={props.addRule} close={handleClose}/> */}

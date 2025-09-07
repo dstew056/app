@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import Rule from './Rule'
+import MultiVarRule from './MultiVarRule'
 import { Button, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ruleTypes from './data/ruleTypes.json'
@@ -12,10 +13,15 @@ function App() {
   const [outputList, setOutputList] = useState([]);
 
   const addRule = (section) => {
-    setRuleList(prevList => [...prevList, { id: nextRuleId, section: section }]);
+    setRuleList(prevList => [...prevList, { id: nextRuleId, section: section, type: "singleVar" }]);
     setOutputList(prevList => [...prevList, {id: nextRuleId, output: false, outputValue: "", outputColor: "#00000"}]);
     setNextRuleId(prevId => prevId + 1);
-    console.log(outputList)
+  }
+
+  const addMultiVarRule = (section) => {
+    setRuleList(prevList => [...prevList, { id: nextRuleId, section: section, type: "multiVar" }]);
+    setOutputList(prevList => [...prevList, {id: nextRuleId, output: false, outputValue: "", outputColor: "#00000"}]);
+    setNextRuleId(prevId => prevId + 1);
   }
 
   const deleteRule = (id) => {
@@ -41,23 +47,34 @@ function App() {
   return (
     <div>
       <h1>Rule App</h1>
-      <CreateRuleModal addRule={addRule}/>
-      {/* {Object.keys(ruleTypes).map(ruletype => (
-        <CreateRule key={ruletype.key} onClick={addRule}/>
-      ))} */}
-      {/* <Button variant="primary" className="btn btn-primary" onClick={addRule}>Add Rule</Button> */}
+      <CreateRuleModal text={"Add A Single Variable Rule"} type={"singleVar"} addRule={addRule}/>
+      <CreateRuleModal text={"Add A Multi Variable Rule"} type={"multiVar"} addRule={addMultiVarRule}/>
       <div className="rule-container">
         {/* Map over the list to render multiple components */}
-        {ruleList.map(ruleData => (
-          <div key={ruleData.id}>
-            <Rule 
-              key={ruleData.id} 
-              id={ruleData.id} 
-              section={ruleData.section} 
-              deleteRule={deleteRule}
-              sendOutput={sendOutput}/>
-          </div>
-        ))}
+        {ruleList.map(ruleData => {
+          if (ruleData.type === "singleVar"){
+            return(
+              <div key={ruleData.id}>
+                <Rule
+                  id={ruleData.id} 
+                  section={ruleData.section} 
+                  deleteRule={deleteRule}
+                  sendOutput={sendOutput}/>
+              </div>
+            )
+          }else{
+            return(
+              <div key={ruleData.id}>
+                <MultiVarRule
+                  id={ruleData.id} 
+                  section={ruleData.section} 
+                  deleteRule={deleteRule}
+                  sendOutput={sendOutput}/>
+              </div>
+            )
+          }
+        }
+        )}
       </div>
       <br/>
       <h4 className="output-container-label">Output:</h4>

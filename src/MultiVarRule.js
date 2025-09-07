@@ -7,14 +7,14 @@ import autocompleteValues from './data/autocompleteValues.json'
 import AutocompleteInput from "./AutocompleteInput";
 import './styles.css'
 
-function Rule(props) {
+function MultiVarRule(props) {
 
   const id = props.id;
   const sendOutput = props.sendOutput
   const [section,setSection] = useState(props.section);
-  const [independentVar, setindependentVar] = useState(props.independentVar);
-  const [conditionComparator, setConditionComparator] = useState("");
-  const [conditionValue, setConditionValue] = useState("");
+  const [independentVar, setindependentVar] = useState([props.independentVar]);
+  const [conditionComparator, setConditionComparator] = useState([""]);
+  const [conditionValue, setConditionValue] = useState([""]);
   const [output, setOutput] = useState("");//boolean, display output value if true
   const [outputValue, setOutputValue] = useState("");//value to be output
   const [outputColor,setOutputColor] = useState("#000000");
@@ -76,7 +76,7 @@ function Rule(props) {
             return target<cv;
           default:
             return false;
-        }
+          }
       case "date":
         target= new Date(target);
         const cvDate = new Date(conditionValue);
@@ -100,7 +100,7 @@ function Rule(props) {
             return target!==cvBool;
           default:
             return false;
-          }
+        }
       default:
         return false;
     }
@@ -129,19 +129,14 @@ function Rule(props) {
 
   return (
     <div className="container">
-      {/* <h2>I am rule {id} for {independentVar} {conditionComparator} {conditionValue} in {section}</h2> */}
+      <h2>I am rule {id} for {independentVar} {conditionComparator} {conditionValue} in {section}</h2>
       <div className="ruleButtonsContainer">
         <h3>In</h3>
         <select
           className="dropdown"
           value={section}
-          onChange={ (e) => setSection(e.target.value)}
         >
-          {Object.keys(ruleTypes).map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
+          <option>{section}</option>
         </select>
         <h3>if</h3>
         {/* <AutocompleteInput options={Object.keys(ruleTypes[section])} setValue={setindependentVar}/> */}
@@ -186,7 +181,6 @@ function Rule(props) {
         </div>
         {/* <p>{output}</p> */}
       </div>
-      {/* <Button variant="primary" className="btn btn-primary" onClick={handleCalculate}>Calculate</Button> */}
       <Button variant="danger" className="btn btn-danger" onClick={() => props.deleteRule(id)}>Delete Rule</Button>
 
     </div>
@@ -194,4 +188,4 @@ function Rule(props) {
  
 }
 
-export default Rule;
+export default MultiVarRule;

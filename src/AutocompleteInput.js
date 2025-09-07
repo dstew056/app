@@ -36,7 +36,6 @@ function AutocompleteInput(props) {
         type="text"
         value={inputValue}
         onChange={handleInputChange}
-        placeholder={options[0]}
       />
       {/* Conditionally render the dropdown */}
       {suggestions.length > 0 && (
