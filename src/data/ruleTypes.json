@@ -20,7 +20,7 @@
             "autocompleteValues": "loincCodes"
         },
         "datetime": {
-            "conditionValueType": "text"
+            "conditionValueType": "date"
         },
         "isAbnormal": {
             "conditionValueType": "boolean"
@@ -114,7 +114,7 @@
             "autocompleteValues": "icd10Codes"
         },
         "datetime": {
-            "conditionValueType": "date"
+            "conditionValueType": "text"
         },
         "imageUrl": {
             "conditionValueType": "text"

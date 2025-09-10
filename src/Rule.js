@@ -11,7 +11,7 @@ function Rule(props) {
 
   const id = props.id;
   const sendOutput = props.sendOutput
-  const [section,setSection] = useState(props.section);
+  const section = props.section
   const [independentVar, setindependentVar] = useState(props.independentVar);
   const [conditionComparator, setConditionComparator] = useState("");
   const [conditionValue, setConditionValue] = useState("");
@@ -135,13 +135,12 @@ function Rule(props) {
         <select
           className="dropdown"
           value={section}
-          onChange={ (e) => setSection(e.target.value)}
         >
-          {Object.keys(ruleTypes).map((option) => (
+          {/* {Object.keys(ruleTypes).map((option) => (
             <option key={option} value={option}>
               {option}
             </option>
-          ))}
+          ))} */}
         </select>
         <h3>if</h3>
         {/* <AutocompleteInput options={Object.keys(ruleTypes[section])} setValue={setindependentVar}/> */}

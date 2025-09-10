@@ -1,3 +1,9 @@
+.inputFieldContainer{
+  display:flex;
+  flex-direction:column;
+  flex-wrap:nowrap;
+}
+
 .ruleButtonsContainer{
   position: relative;
   display: flex;

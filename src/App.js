@@ -5,6 +5,7 @@ import { Button, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ruleTypes from './data/ruleTypes.json'
 import CreateRuleModal from './CreateRuleModal';
+import InputField from './InputField';
 
 function App() {
 
@@ -47,8 +48,7 @@ function App() {
   return (
     <div>
       <h1>Rule App</h1>
-      <CreateRuleModal text={"Add A Single Variable Rule"} type={"singleVar"} addRule={addRule}/>
-      <CreateRuleModal text={"Add A Multi Variable Rule"} type={"multiVar"} addRule={addMultiVarRule}/>
+      <CreateRuleModal text={"Add A Rule"} type={"multiVar"} addRule={addMultiVarRule}/>
       <div className="rule-container">
         {/* Map over the list to render multiple components */}
         {ruleList.map(ruleData => {
@@ -85,7 +85,7 @@ function App() {
               key={outputData.id} 
               id={outputData.id} 
               className={"outputLine"+outputData.output} 
-              style={{color: outputData.outputColor}/* +outputData.outputColor */}
+              style={{color: outputData.outputColor.hex}/* +outputData.outputColor */}
             >
               {outputData.outputValue}
             </p>
