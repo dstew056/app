@@ -1,11 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import Rule from './Rule'
-import MultiVarRule from './MultiVarRule'
 import { Button, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ruleTypes from './data/ruleTypes.json'
 import CreateRuleModal from './CreateRuleModal';
-import InputField from './InputField';
 
 function App() {
 
@@ -14,13 +12,7 @@ function App() {
   const [outputList, setOutputList] = useState([]);
 
   const addRule = (section) => {
-    setRuleList(prevList => [...prevList, { id: nextRuleId, section: section, type: "singleVar" }]);
-    setOutputList(prevList => [...prevList, {id: nextRuleId, output: false, outputValue: "", outputColor: "#00000"}]);
-    setNextRuleId(prevId => prevId + 1);
-  }
-
-  const addMultiVarRule = (section) => {
-    setRuleList(prevList => [...prevList, { id: nextRuleId, section: section, type: "multiVar" }]);
+    setRuleList(prevList => [...prevList, { id: nextRuleId, section: section}]);
     setOutputList(prevList => [...prevList, {id: nextRuleId, output: false, outputValue: "", outputColor: "#00000"}]);
     setNextRuleId(prevId => prevId + 1);
   }
@@ -48,31 +40,19 @@ function App() {
   return (
     <div>
       <h1>Rule App</h1>
-      <CreateRuleModal text={"Add A Rule"} type={"multiVar"} addRule={addMultiVarRule}/>
+      <CreateRuleModal text={"Add A Rule"} addRule={addRule}/>
       <div className="rule-container">
         {/* Map over the list to render multiple components */}
         {ruleList.map(ruleData => {
-          if (ruleData.type === "singleVar"){
-            return(
-              <div key={ruleData.id}>
-                <Rule
-                  id={ruleData.id} 
-                  section={ruleData.section} 
-                  deleteRule={deleteRule}
-                  sendOutput={sendOutput}/>
-              </div>
-            )
-          }else{
-            return(
-              <div key={ruleData.id}>
-                <MultiVarRule
-                  id={ruleData.id} 
-                  section={ruleData.section} 
-                  deleteRule={deleteRule}
-                  sendOutput={sendOutput}/>
-              </div>
-            )
-          }
+          return(
+            <div key={ruleData.id}>
+              <Rule
+                id={ruleData.id} 
+                section={ruleData.section} 
+                deleteRule={deleteRule}
+                sendOutput={sendOutput}/>
+            </div>
+          )
         }
         )}
       </div>

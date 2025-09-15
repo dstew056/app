@@ -4,7 +4,22 @@
   flex-wrap:nowrap;
 }
 
+.sectionLabel{
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.ruleContainer{
+  background-color: #ccc;
+  padding: 10px;
+  border-radius: 10px;
+}
+
 .ruleButtonsContainer{
+  background-color: #ccc;
   position: relative;
   display: flex;
   flex-direction: row;
@@ -13,6 +28,12 @@
 
 .ruleButtonsContainer h3{
   padding: 0px 10px;
+  width: 70px;
+}
+
+.ruleButtonsContainer h4{
+  padding: 0px 10px;
+  width: 100px;
 }
 
 .dropdown{
@@ -80,6 +101,7 @@
   width: 50%;
   margin: 0 auto;
   border: 2px solid black;
+  min-height: 100px;
 }
 
 .output-container-label{

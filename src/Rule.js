@@ -1,69 +1,56 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Button,  } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import ruleTypes from './data/ruleTypes.json'
 import conditionComparators from './data/conditionComparators.json'
 import patientData from './data/patientData.json'
-import autocompleteValues from './data/autocompleteValues.json'
-import AutocompleteInput from "./AutocompleteInput";
 import './styles.css'
+import InputField from './InputField';
+import { CirclePicker } from 'react-color';
 
 function Rule(props) {
 
   const id = props.id;
   const sendOutput = props.sendOutput
-  const section = props.section
-  const [independentVar, setindependentVar] = useState(props.independentVar);
-  const [conditionComparator, setConditionComparator] = useState("");
-  const [conditionValue, setConditionValue] = useState("");
+  const section = props.section;
+
+  const [independentVar, setIndependentVar] = useState([Object.keys(ruleTypes[section])[0]]);
+  const [conditionComparator, setConditionComparator] = useState([conditionComparators[ruleTypes[section][Object.keys(ruleTypes[section])[0]].conditionValueType][0]]);
+  const [conditionValue, setConditionValue] = useState([""]);
+
   const [output, setOutput] = useState("");//boolean, display output value if true
   const [outputValue, setOutputValue] = useState("");//value to be output
   const [outputColor,setOutputColor] = useState("#000000");
-
-  const renderInputField = () => {
-    const inputType = ruleTypes?.[section]?.[independentVar]?.conditionValueType || 'text';
-    if (inputType === "autocompleteText"){
-      return(<AutocompleteInput options={autocompleteValues[ruleTypes?.[section]?.[independentVar]?.autocompleteValues]} setValue={setConditionValue}/>)
-    }else if(inputType === "boolean"){
-      return(
-        <select
-          className="dropdown"
-        >
-          <option key={"true"} value={true}>true</option>
-          <option key={"false"} value={false}>false</option>
-        </select>
-      )
-    }else{
-      return(
-        <input 
-            className="input-container"
-            type={inputType}
-            value={conditionValue}
-            onChange={ (e) => setConditionValue(e.target.value)}
-            style={{ width: '200px' }}
-          />
-      )
+  
+  const [fieldList,setFieldList] = useState([
+    {
+      id: 0, 
+      section: section, 
+      independentVar: Object.keys(ruleTypes[section])[0],
+      conditionComparator: conditionComparators[ruleTypes[section][Object.keys(ruleTypes[section])[0]].conditionValueType][0],
+      conditionValue: ""
     }
-  }
+  ]);
+  const [nextFieldId,setNextFieldId] = useState(1);
 
-  const calculateOutput = useCallback((target,cvt) => {
-    if (conditionValue === ""){ return false};
+  const calculateOutput = useCallback((target,cvt,conditionComparator_,conditionValue_) => {
+    if (conditionValue_ === ""){ return false};
     switch(cvt){
       case "text":
       case "autocompleteText":
-        switch(conditionComparator){
+        switch(conditionComparator_){
           case "contains":
-            return target.toLowerCase().includes(conditionValue.toLowerCase());
+            return target.toLowerCase().includes(conditionValue_.toLowerCase());
           case "contains (case sensitive)":
-            return target.includes(conditionValue);
+            return target.includes(conditionValue_);
           case "is exactly":
-            return target === conditionValue;
+            return target === conditionValue_;
           default:
             return false;
         }
       case "number":
         target= +target
-        const cv = +conditionValue
-        switch(conditionComparator){
+        const cv = +conditionValue_
+        switch(conditionComparator_){
           case ">":
             return target>cv;
           case ">=":
@@ -76,11 +63,11 @@ function Rule(props) {
             return target<cv;
           default:
             return false;
-        }
+          }
       case "date":
         target= new Date(target);
-        const cvDate = new Date(conditionValue);
-        switch(conditionComparator){
+        const cvDate = new Date(conditionValue_);
+        switch(conditionComparator_){
           case "is before":
             return target<cvDate;
           case "is exactly":
@@ -92,82 +79,121 @@ function Rule(props) {
         }
       case "boolean":
         target= (target === "true");
-        const cvBool = (conditionValue === "true");
-        switch(conditionComparator){
-          case "eqauls":
+        const cvBool = (conditionValue_ === "true");
+        switch(conditionComparator_){
+          case "equals":
             return target===cvBool;
           case "does not equal":
             return target!==cvBool;
           default:
             return false;
-          }
+        }
       default:
         return false;
     }
-  },[conditionComparator,conditionValue]);
+  },[]);
+
+  const updateIndependentVar = (id,value) => {
+    const updatedValue = {
+      ...independentVar,
+      [id]: value
+    };
+    setIndependentVar(updatedValue);
+  }
+
+  const updateConditionComparator = (id,value) => {
+    const updatedValue = {
+      ...conditionComparator,
+      [id]: value
+    };  
+    setConditionComparator(updatedValue);
+  }
+  
+  const updateConditionValue = (id,value) => {
+    const updatedValue = {
+      ...conditionValue,
+      [id]: value
+    };
+    setConditionValue(updatedValue);
+  }
 
   useEffect(() => {
-    const targets = patientData?.[section].map(subarray => subarray?.[independentVar] || "") || []
-    const cvt = ruleTypes?.[section]?.[independentVar]?.conditionValueType || "text"
-    setOutput(targets.map(target => calculateOutput(target,cvt)).some(value=>value===true))
-  },[section,independentVar,conditionValue,calculateOutput]);
+    let results = [];
+    const iVValues = Object.values(independentVar);
+    const cCValues = Object.values(conditionComparator);
+    const cVValues = Object.values(conditionValue);
+    for (let i = 0; i < iVValues.length; i++) {
+      const targets = patientData?.[section].map(subarray => subarray?.[iVValues[i]] || "") || [];
+      const cvt = ruleTypes?.[section]?.[iVValues[i]]?.conditionValueType || "text";
+      results = [...results,targets.map(target => calculateOutput(target,cvt,cCValues[i],cVValues[i]))];
+    }
+
+    const result = results.length > 0 ?
+      results.reduce((accumulator, currentArray) => {
+        return accumulator.map((element, index) => {
+          return element && currentArray[index];
+        });
+      }) 
+      : [];
+    
+    
+    setOutput(result.some(e=>e===true))
+  },[section,independentVar,conditionComparator,conditionValue,calculateOutput]);
 
   useEffect(() => {
     sendOutput(id,output,outputValue,outputColor)
   },[output,outputValue,id,outputColor,sendOutput]);
 
-  useEffect(()=>{
-    setConditionValue("")
-    setindependentVar(Object.keys(ruleTypes[section])[0]);
-    setConditionComparator(conditionComparators[ruleTypes[section][Object.keys(ruleTypes[section])[0]].conditionValueType][0])
-  },[section]);
+  const addField = ()=>{
+    setFieldList(prevList => [...prevList, { 
+      id: nextFieldId, 
+      section: section, 
+      independentVar: Object.keys(ruleTypes[section])[0],
+      conditionComparator: conditionComparators[ruleTypes[section][Object.keys(ruleTypes[section])[0]].conditionValueType][0],
+      conditionValue: ""
+    }]);
+    updateIndependentVar(nextFieldId,Object.keys(ruleTypes[section])[0]);
+    updateConditionComparator(nextFieldId,conditionComparators[ruleTypes[section][Object.keys(ruleTypes[section])[0]].conditionValueType][0]);
+    updateConditionValue(nextFieldId,"");
+    setNextFieldId(prevId=> prevId + 1);
+  }
 
-  useEffect(()=>{
-    setConditionValue("")
-    setConditionComparator(conditionComparators[ruleTypes?.[section]?.[independentVar]?.conditionValueType || "text"][0])
-  },[independentVar, section]);
+  const deleteField = (id) => {
+    console.log(independentVar)
+    const { [id]: _, ...updatedIndependentVar } = independentVar;
+    setIndependentVar(updatedIndependentVar);
+
+    const { [id]: __, ...updatedConditionComparator } = conditionComparator;
+    setConditionComparator(updatedConditionComparator);
+
+    const { [id]: ___, ...updatedConditionValue } = conditionValue;
+    setConditionValue(updatedConditionValue);
+
+    setFieldList(prevList => {
+      return prevList.filter(field => field.id!==id)
+    })
+  }
 
   return (
-    <div className="container">
-      {/* <h2>I am rule {id} for {independentVar} {conditionComparator} {conditionValue} in {section}</h2> */}
+    <div className="ruleContainer">
       <div className="ruleButtonsContainer">
         <h3>In</h3>
-        <select
-          className="dropdown"
-          value={section}
-        >
-          {/* {Object.keys(ruleTypes).map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))} */}
-        </select>
-        <h3>if</h3>
-        {/* <AutocompleteInput options={Object.keys(ruleTypes[section])} setValue={setindependentVar}/> */}
-        <select
-          className="dropdown"
-          value={independentVar}
-          onChange={ (e) => setindependentVar(e.target.value)}
-        >
-          {Object.keys(ruleTypes[section]).map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-        <select
-          className="dropdown"
-          value={conditionComparator}
-          onChange={ (e) => setConditionComparator(e.target.value)}
-        >
-          {conditionComparators[ruleTypes?.[section]?.[independentVar]?.conditionValueType || "text"].map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-        {renderInputField()}
-        <h3>output</h3> 
+        <label className="sectionLabel">{section}</label>
+        <div className='inputFieldContainer'>
+          {fieldList.map(fieldData=>{
+            return(
+              <div key={fieldData.id}>
+                <InputField id={fieldData.id} section={section} independentVar={independentVar[fieldData.id]} conditionComparator={conditionComparator[fieldData.id]} conditionValue={conditionValue[fieldData.id]} updateData={[updateIndependentVar,updateConditionComparator,updateConditionValue]} deleteField={deleteField} minId={Math.min(...fieldList.map(item => +(item.id)))}></InputField>
+              </div>
+            )
+          }
+          )}
+          {/* <InputField id={0} section={section} updateData={[updateIndependentVar,updateConditionComparator,updateConditionValue]}></InputField>
+          <InputField id={1} section={section} updateData={[updateIndependentVar,updateConditionComparator,updateConditionValue]}></InputField>
+         */}
+          <Button onClick={addField}>Add Condition</Button>
+        </div>
+        <h4>output</h4> 
         <input 
           className="input-container"
           type="text"
@@ -176,16 +202,11 @@ function Rule(props) {
           style={{ width: '200px' }}
         />
         <div>
-          <label>colour:</label>
-          <input
-            type="color"
-            value={outputColor}
-            onChange={(e) => setOutputColor(e.target.value)}
+          <CirclePicker onChange={setOutputColor}
+            colors={["#f44336", "#e9a21eff", "#2752b0ff", "#1d8122ff", "#000000ff", "#7c6646ff"]}
           />
         </div>
-        {/* <p>{output}</p> */}
       </div>
-      {/* <Button variant="primary" className="btn btn-primary" onClick={handleCalculate}>Calculate</Button> */}
       <Button variant="danger" className="btn btn-danger" onClick={() => props.deleteRule(id)}>Delete Rule</Button>
 
     </div>

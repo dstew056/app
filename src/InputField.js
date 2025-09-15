@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Button,  } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import ruleTypes from './data/ruleTypes.json'
 import conditionComparators from './data/conditionComparators.json'
-import patientData from './data/patientData.json'
 import autocompleteValues from './data/autocompleteValues.json'
 import AutocompleteInput from "./AutocompleteInput";
 import './styles.css'
@@ -10,12 +9,11 @@ import './styles.css'
 function InputField(props) {
 
   const id = props.id;
-  const sendOutput = props.sendOutput
   const section = props.section;
   const [updateIndependentVar,updateConditionComparator,updateConditionValue] = props.updateData;
   const [independentVar, setIndependentVar] = useState(props.independentVar);
   const [conditionComparator, setConditionComparator] = useState(props.conditionComparator);
-  const [conditionValue, setConditionValue] = useState("");
+  const [conditionValue, setConditionValue] = useState(props.conditionValue);
 
   const renderInputField = () => {
     const inputType = ruleTypes?.[section]?.[independentVar]?.conditionValueType || 'text';
@@ -45,7 +43,6 @@ function InputField(props) {
   }
 
   useEffect(()=>{
-    setConditionValue("")
     setConditionComparator(conditionComparators[ruleTypes?.[section]?.[independentVar]?.conditionValueType || "text"][0])
   },[independentVar, section]);
 
@@ -54,7 +51,7 @@ function InputField(props) {
     updateIndependentVar(id,e);
     updateConditionComparator(id,conditionComparators[ruleTypes?.[section]?.[e]?.conditionValueType || "text"][0]);
     updateConditionValue("");
-    console.log(conditionComparators[ruleTypes?.[section]?.[e]?.conditionValueType || "text"][0])
+    //console.log(conditionComparators[ruleTypes?.[section]?.[e]?.conditionValueType || "text"][0])
   }
 
   const handleCCChange = (e)=>{
@@ -69,6 +66,8 @@ function InputField(props) {
 
 return (
     <div className="ruleButtonsContainer">
+      {id === props.minId && <h3>If</h3>}
+      {id > props.minId && <h3>And</h3>}
       <select
         className="dropdown"
         value={independentVar}
@@ -92,6 +91,7 @@ return (
         ))}
       </select>
       {renderInputField()}
+      <Button variant="danger" className="btn btn-danger" onClick={()=>props.deleteField(id)}>X</Button>
     </div>
   )
 }
