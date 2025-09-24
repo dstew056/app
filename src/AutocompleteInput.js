@@ -6,6 +6,7 @@ function AutocompleteInput(props) {
   const setValue = props.setValue
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [isFocused, setIsFocused] = useState(false);
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -14,14 +15,11 @@ function AutocompleteInput(props) {
     setValue(value);
 
     // Filter suggestions based on the input
-    if (value.length > 0) {
-      const filteredSuggestions = options.filter(option =>
-        option.toLowerCase().includes(value.toLowerCase())
-      );
-      setSuggestions(filteredSuggestions);
-    } else {
-      setSuggestions([]); // Clear suggestions if input is empty
-    }
+    const filteredSuggestions = options.filter(option =>
+      option.toLowerCase().includes(value.toLowerCase())
+    );
+    console.log(filteredSuggestions)
+    setSuggestions(filteredSuggestions);
   };
 
   // Handle a suggestion being clicked
@@ -30,15 +28,26 @@ function AutocompleteInput(props) {
     setSuggestions([]); // Hide dropdown after selection
   };
 
+  const handleFocus = () =>{
+    const filteredSuggestions = options.filter(option =>
+      option.toLowerCase().includes(inputValue.toLowerCase())
+    );
+    console.log(filteredSuggestions)
+    setSuggestions(filteredSuggestions);
+    setIsFocused(true);
+  }
+
   return (
     <div className="autocomplete-container">
       <input
         type="text"
         value={inputValue}
         onChange={handleInputChange}
+        onFocus={handleFocus}
+        onBlur={() => setIsFocused(false)}
       />
       {/* Conditionally render the dropdown */}
-      {suggestions.length > 0 && (
+      {isFocused && (
         <ul className="suggestions-list">
           {suggestions.map((suggestion, index) => (
             <li key={index} onClick={() => handleSuggestionClick(suggestion)}>

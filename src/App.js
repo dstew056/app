@@ -65,7 +65,7 @@ function App() {
               key={outputData.id} 
               id={outputData.id} 
               className={"outputLine"+outputData.output} 
-              style={{color: outputData.outputColor.hex}/* +outputData.outputColor */}
+              style={{color: outputData.outputColor.hex}}
             >
               {outputData.outputValue}
             </p>

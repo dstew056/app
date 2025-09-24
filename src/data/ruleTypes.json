@@ -57,7 +57,7 @@
     },
     "Notes": {
         "datetime": {
-            "conditionValueType": "text"
+            "conditionValueType": "date"
         },
         "author": {
             "conditionValueType": "text"
@@ -114,7 +114,7 @@
             "autocompleteValues": "icd10Codes"
         },
         "datetime": {
-            "conditionValueType": "text"
+            "conditionValueType": "date"
         },
         "imageUrl": {
             "conditionValueType": "text"

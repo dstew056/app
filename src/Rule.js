@@ -6,6 +6,7 @@ import patientData from './data/patientData.json'
 import './styles.css'
 import InputField from './InputField';
 import { CirclePicker } from 'react-color';
+import AutocompleteInput from "./AutocompleteInput";
 
 function Rule(props) {
 
@@ -20,6 +21,7 @@ function Rule(props) {
   const [output, setOutput] = useState("");//boolean, display output value if true
   const [outputValue, setOutputValue] = useState("");//value to be output
   const [outputColor,setOutputColor] = useState("#000000");
+  const [outputOptions,setOutputOptions] = useState([])
   
   const [fieldList,setFieldList] = useState([
     {
@@ -117,6 +119,17 @@ function Rule(props) {
     setConditionValue(updatedValue);
   }
 
+  const getOutputOptions = useCallback(()=>{
+    let results = ["Rule " + (id +1) + " is true!"];
+    const iVValues = Object.values(independentVar);
+    const cCValues = Object.values(conditionComparator);
+    const cVValues = Object.values(conditionValue);
+    for (let i = 0; i < iVValues.length; i++) {
+      results.push(iVValues[i] + " " + cCValues[i] + " " + (cVValues[i] === "" ? '""' : cVValues[i]))
+    }
+    return results
+  },[conditionComparator, conditionValue, id, independentVar]);
+
   useEffect(() => {
     let results = [];
     const iVValues = Object.values(independentVar);
@@ -136,9 +149,10 @@ function Rule(props) {
       }) 
       : [];
     
-    
+    setOutputOptions(getOutputOptions())
+    console.log(getOutputOptions());
     setOutput(result.some(e=>e===true))
-  },[section,independentVar,conditionComparator,conditionValue,calculateOutput]);
+  },[section,independentVar,conditionComparator,conditionValue,calculateOutput,getOutputOptions]);
 
   useEffect(() => {
     sendOutput(id,output,outputValue,outputColor)
@@ -159,7 +173,6 @@ function Rule(props) {
   }
 
   const deleteField = (id) => {
-    console.log(independentVar)
     const { [id]: _, ...updatedIndependentVar } = independentVar;
     setIndependentVar(updatedIndependentVar);
 
@@ -177,6 +190,7 @@ function Rule(props) {
   return (
     <div className="ruleContainer">
       <div className="ruleButtonsContainer">
+        <h6>{id+1}</h6>
         <h3>In</h3>
         <label className="sectionLabel">{section}</label>
         <div className='inputFieldContainer'>
@@ -193,15 +207,18 @@ function Rule(props) {
          */}
           <Button onClick={addField}>Add Condition</Button>
         </div>
-        <h4>output</h4> 
-        <input 
-          className="input-container"
-          type="text"
-          value={outputValue}
-          onChange={ (e) => setOutputValue(e.target.value)}
-          style={{ width: '200px' }}
-        />
-        <div>
+        <div className="setOutputContainer">
+          <div className="ruleButtonsContainer">
+            <h4>output</h4>
+            <AutocompleteInput options={outputOptions} setValue={setOutputValue}/>
+            {/* <input 
+              className="input-container"
+              type="text"
+              value={outputValue}
+              onChange={ (e) => setOutputValue(e.target.value)}
+              style={{ width: '200px' }}
+            /> */}
+          </div>
           <CirclePicker onChange={setOutputColor}
             colors={["#f44336", "#e9a21eff", "#2752b0ff", "#1d8122ff", "#000000ff", "#7c6646ff"]}
           />

@@ -16,6 +16,7 @@
   background-color: #ccc;
   padding: 10px;
   border-radius: 10px;
+  margin:10px;
 }
 
 .ruleButtonsContainer{
@@ -95,6 +96,12 @@
 
 .outputLinefalse{
   display:none
+}
+
+.setOutputContainer{
+  display:flex;
+  flex-direction: column;
+  padding:10px
 }
 
 .output-container{
