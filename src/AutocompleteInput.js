@@ -18,13 +18,14 @@ function AutocompleteInput(props) {
     const filteredSuggestions = options.filter(option =>
       option.toLowerCase().includes(value.toLowerCase())
     );
-    console.log(filteredSuggestions)
     setSuggestions(filteredSuggestions);
   };
 
   // Handle a suggestion being clicked
   const handleSuggestionClick = (suggestion) => {
     setInputValue(suggestion);
+    setValue(suggestion);
+    setIsFocused(false);
     setSuggestions([]); // Hide dropdown after selection
   };
 
@@ -32,7 +33,6 @@ function AutocompleteInput(props) {
     const filteredSuggestions = options.filter(option =>
       option.toLowerCase().includes(inputValue.toLowerCase())
     );
-    console.log(filteredSuggestions)
     setSuggestions(filteredSuggestions);
     setIsFocused(true);
   }
@@ -44,7 +44,7 @@ function AutocompleteInput(props) {
         value={inputValue}
         onChange={handleInputChange}
         onFocus={handleFocus}
-        onBlur={() => setIsFocused(false)}
+        onBlur={() => setTimeout(() => {setIsFocused(false);}, 100)}
       />
       {/* Conditionally render the dropdown */}
       {isFocused && (

@@ -150,7 +150,6 @@ function Rule(props) {
       : [];
     
     setOutputOptions(getOutputOptions())
-    console.log(getOutputOptions());
     setOutput(result.some(e=>e===true))
   },[section,independentVar,conditionComparator,conditionValue,calculateOutput,getOutputOptions]);
 
