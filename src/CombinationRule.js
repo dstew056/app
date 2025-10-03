@@ -51,7 +51,7 @@ function CombinationRule(props){
         <h6>{id+1}</h6>
         <div className="setOutputContainer">
           <div className="ruleButtonsContainer">
-            <div className='inputFieldContainer'>
+            <div className='comboFieldContainer'>
               {selectList.map(selectData=>(
                 <div>
                   {/* <h4>{selectData.i===0?"If":"and"}</h4> */}
@@ -78,8 +78,8 @@ function CombinationRule(props){
             />
           </div>
         </div>
+        <Button variant="danger" className="btn btn-danger" onClick={() => props.deleteRule(id)}>Delete Rule</Button>
       </div>
-      <Button variant="danger" className="btn btn-danger" onClick={() => props.deleteRule(id)}>Delete Rule</Button>
 
     </div>
   )
