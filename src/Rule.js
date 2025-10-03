@@ -120,15 +120,13 @@ function Rule(props) {
   }
 
   const getOutputOptions = useCallback(()=>{
-    let results = ["Rule " + (id +1) + " is true!"];
-    const iVValues = Object.values(independentVar);
-    const cCValues = Object.values(conditionComparator);
+    let results = [];
     const cVValues = Object.values(conditionValue);
-    for (let i = 0; i < iVValues.length; i++) {
-      results.push(iVValues[i] + " " + cCValues[i] + " " + (cVValues[i] === "" ? '""' : cVValues[i]))
+    for (let i = 0; i < cVValues.length; i++) {
+      results.push(cVValues[i] === "" ? '""' : cVValues[i])
     }
     return results
-  },[conditionComparator, conditionValue, id, independentVar]);
+  },[conditionValue]);
 
   useEffect(() => {
     let results = [];

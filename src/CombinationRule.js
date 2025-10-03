@@ -23,7 +23,6 @@ function CombinationRule(props){
   const [outputOptions,setOutputOptions] = useState([])
 
   useEffect(() =>{
-    console.log("asdf")
     for(let i=0; i<selectList.length;i++){
       const ruleId = selectList.filter(e=>e.i===i)[0].rule
       if (!data.filter(e=>e.id===+ruleId)[0].output){
