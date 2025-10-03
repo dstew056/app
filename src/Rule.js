@@ -5,17 +5,17 @@ import conditionComparators from './data/conditionComparators.json'
 import patientData from './data/patientData.json'
 import './styles.css'
 import InputField from './InputField';
-import { CirclePicker } from 'react-color';
+import { GithubPicker } from 'react-color';
 import AutocompleteInput from "./AutocompleteInput";
 
 function Rule(props) {
 
   const id = props.id;
   const sendOutput = props.sendOutput
-  const section = props.section;
+  const [section,setSection] = useState([props.section]);
 
-  const [independentVar, setIndependentVar] = useState([Object.keys(ruleTypes[section])[0]]);
-  const [conditionComparator, setConditionComparator] = useState([conditionComparators[ruleTypes[section][Object.keys(ruleTypes[section])[0]].conditionValueType][0]]);
+  const [independentVar, setIndependentVar] = useState([Object.keys(ruleTypes[section[0]])[0]]);
+  const [conditionComparator, setConditionComparator] = useState([conditionComparators[ruleTypes[section[0]][Object.keys(ruleTypes[section[0]])[0]].conditionValueType][0]]);
   const [conditionValue, setConditionValue] = useState([""]);
 
   const [output, setOutput] = useState("");//boolean, display output value if true
@@ -27,8 +27,8 @@ function Rule(props) {
     {
       id: 0, 
       section: section, 
-      independentVar: Object.keys(ruleTypes[section])[0],
-      conditionComparator: conditionComparators[ruleTypes[section][Object.keys(ruleTypes[section])[0]].conditionValueType][0],
+      independentVar: Object.keys(ruleTypes[section[0]])[0],
+      conditionComparator: conditionComparators[ruleTypes[section[0]][Object.keys(ruleTypes[section[0]])[0]].conditionValueType][0],
       conditionValue: ""
     }
   ]);
@@ -133,22 +133,28 @@ function Rule(props) {
     const iVValues = Object.values(independentVar);
     const cCValues = Object.values(conditionComparator);
     const cVValues = Object.values(conditionValue);
-    for (let i = 0; i < iVValues.length; i++) {
-      const targets = patientData?.[section].map(subarray => subarray?.[iVValues[i]] || "") || [];
-      const cvt = ruleTypes?.[section]?.[iVValues[i]]?.conditionValueType || "text";
-      results = [...results,targets.map(target => calculateOutput(target,cvt,cCValues[i],cVValues[i]))];
+
+    let result=[]
+
+    for(let i = 0; i < section.length; i++){
+      for (let j = 0; j < iVValues.length; j++) {
+        const targets = patientData?.[section[i]].map(subarray => subarray?.[iVValues[j]] || "") || [];
+        const cvt = ruleTypes?.[section[i]]?.[iVValues[j]]?.conditionValueType || "text";
+        results = [...results,...targets.map(target => calculateOutput(target,cvt,cCValues[j],cVValues[j]))];
+      }
+
+      /* result = [...result, results.length > 0 ?
+        results.reduce((accumulator, currentArray) => {
+          return accumulator.map((element, index) => {
+            return element && currentArray[index];
+          });
+        })
+        : []]; */
     }
 
-    const result = results.length > 0 ?
-      results.reduce((accumulator, currentArray) => {
-        return accumulator.map((element, index) => {
-          return element && currentArray[index];
-        });
-      }) 
-      : [];
-    
+    console.log(results)
     setOutputOptions(getOutputOptions())
-    setOutput(result.some(e=>e===true))
+    setOutput(results.some(e=>e===true))
   },[section,independentVar,conditionComparator,conditionValue,calculateOutput,getOutputOptions]);
 
   useEffect(() => {
@@ -184,12 +190,33 @@ function Rule(props) {
     })
   }
 
+  const changeSection = (event)=>{
+    const {value, checked} = event.target;
+
+    console.log(section)
+    console.log(value)
+    setSection(prevCheckedItems => {
+      if (checked) {
+        return [...prevCheckedItems, value];
+      } else {
+        return prevCheckedItems.filter(item => item !== value);
+      }
+    });
+  }
+
   return (
     <div className="ruleContainer">
       <div className="ruleButtonsContainer">
         <h6>{id+1}</h6>
         <h3>In</h3>
-        <label className="sectionLabel">{section}</label>
+        <form className="sectionSelect">
+          {Object.keys(ruleTypes).map(sectionName=>(
+            <div key={sectionName}>
+              <input type="checkbox" value={sectionName} checked={section.includes(sectionName)} onChange={changeSection}/>
+              <label >{sectionName}</label>
+            </div>
+          ))}
+        </form>
         <div className='inputFieldContainer'>
           {fieldList.map(fieldData=>{
             return(
@@ -205,20 +232,12 @@ function Rule(props) {
           <Button onClick={addField}>Add Condition</Button>
         </div>
         <div className="setOutputContainer">
-          <div className="ruleButtonsContainer">
-            <h4>output</h4>
+          <div className='inputFieldContainer'>
             <AutocompleteInput options={outputOptions} setValue={setOutputValue}/>
-            {/* <input 
-              className="input-container"
-              type="text"
-              value={outputValue}
-              onChange={ (e) => setOutputValue(e.target.value)}
-              style={{ width: '200px' }}
-            /> */}
+            <GithubPicker onChange={setOutputColor} color={"#000000ff"} triangle='hide' width="163px"
+              colors={["#000000ff", "#f44336", "#e9a21eff", "#2752b0ff", "#1d8122ff", "#7c6646ff"]}
+            />
           </div>
-          <CirclePicker onChange={setOutputColor}
-            colors={["#f44336", "#e9a21eff", "#2752b0ff", "#1d8122ff", "#000000ff", "#7c6646ff"]}
-          />
         </div>
         <Button variant="danger" className="btn btn-danger" onClick={() => props.deleteRule(id)}>Delete Rule</Button>
       </div>

@@ -73,7 +73,7 @@ return (
         value={independentVar}
         onChange={ (e) => handleIVChange(e.target.value)}
       >
-        {Object.keys(ruleTypes[section]).map((option) => (
+        {Object.keys(ruleTypes[section[0]]).map((option) => (
           <option key={option} value={option}>
             {option}
           </option>

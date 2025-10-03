@@ -47,7 +47,6 @@ function App() {
     const ids = ruleList.filter(
         ruleData=>ruleData.section!=="Combination").map(
           ruleData=>ruleData.id)
-    console.log(outputList.filter(outputData=>ids.includes(outputData.id)))
     return outputList.filter(outputData=>ids.includes(outputData.id))
   },[outputList,ruleList])
 

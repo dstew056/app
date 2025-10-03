@@ -4,6 +4,12 @@
   flex-wrap:nowrap;
 }
 
+.sectionSelect{
+  display: grid;
+  min-width: 350px;
+  grid-template-columns: 33% 33% 33%;
+}
+
 .comboFieldContainer{
   display:flex;
   flex-direction:row;
