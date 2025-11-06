@@ -18,8 +18,10 @@ function Rule(props) {
   const [conditionComparator, setConditionComparator] = useState([conditionComparators[ruleTypes[section[0]][Object.keys(ruleTypes[section[0]])[0]].conditionValueType][0]]);
   const [conditionValue, setConditionValue] = useState([""]);
 
-  const [output, setOutput] = useState("");//boolean, display output value if true
+  const [output, setOutput] = useState(false);//boolean, display output value if true
   const [outputValue, setOutputValue] = useState("");//value to be output
+  const [falseOutput, setFalseOutput] = useState(false)
+  const [falseOutputValue, setFalseOutputValue] = useState("")
   const [outputColor,setOutputColor] = useState("#000000");
   const [outputOptions,setOutputOptions] = useState([])
   
@@ -134,15 +136,15 @@ function Rule(props) {
     const cCValues = Object.values(conditionComparator);
     const cVValues = Object.values(conditionValue);
 
-    let result=[]
-
     for(let i = 0; i < section.length; i++){
+      let result=true
       for (let j = 0; j < iVValues.length; j++) {
         const targets = patientData?.[section[i]].map(subarray => subarray?.[iVValues[j]] || "") || [];
         const cvt = ruleTypes?.[section[i]]?.[iVValues[j]]?.conditionValueType || "text";
-        results = [...results,...targets.map(target => calculateOutput(target,cvt,cCValues[j],cVValues[j]))];
+        result = result && targets.map(target => calculateOutput(target,cvt,cCValues[j],cVValues[j])).some(e=>e===true);
       }
 
+      results = [...results,result]
       /* result = [...result, results.length > 0 ?
         results.reduce((accumulator, currentArray) => {
           return accumulator.map((element, index) => {
@@ -151,26 +153,25 @@ function Rule(props) {
         })
         : []]; */
     }
-
-    console.log(results)
+    //results = results.map(e=>e.every(e=>e===true))
     setOutputOptions(getOutputOptions())
     setOutput(results.some(e=>e===true))
   },[section,independentVar,conditionComparator,conditionValue,calculateOutput,getOutputOptions]);
 
   useEffect(() => {
-    sendOutput(id,output,outputValue,outputColor)
-  },[output,outputValue,id,outputColor,sendOutput]);
+    sendOutput(id,output,outputValue,falseOutput,falseOutputValue,outputColor)
+  },[output,outputValue,falseOutput,falseOutputValue,id,outputColor,sendOutput]);
 
   const addField = ()=>{
     setFieldList(prevList => [...prevList, { 
       id: nextFieldId, 
       section: section, 
-      independentVar: Object.keys(ruleTypes[section])[0],
-      conditionComparator: conditionComparators[ruleTypes[section][Object.keys(ruleTypes[section])[0]].conditionValueType][0],
+      independentVar: Object.keys(ruleTypes[section[0]])[0],
+      conditionComparator: conditionComparators[ruleTypes[section[0]][Object.keys(ruleTypes[section[0]])[0]].conditionValueType][0],
       conditionValue: ""
     }]);
-    updateIndependentVar(nextFieldId,Object.keys(ruleTypes[section])[0]);
-    updateConditionComparator(nextFieldId,conditionComparators[ruleTypes[section][Object.keys(ruleTypes[section])[0]].conditionValueType][0]);
+    updateIndependentVar(nextFieldId,Object.keys(ruleTypes[section[0]])[0]);
+    updateConditionComparator(nextFieldId,conditionComparators[ruleTypes[section[0]][Object.keys(ruleTypes[section[0]])[0]].conditionValueType][0]);
     updateConditionValue(nextFieldId,"");
     setNextFieldId(prevId=> prevId + 1);
   }
@@ -193,8 +194,6 @@ function Rule(props) {
   const changeSection = (event)=>{
     const {value, checked} = event.target;
 
-    console.log(section)
-    console.log(value)
     setSection(prevCheckedItems => {
       if (checked) {
         return [...prevCheckedItems, value];
@@ -202,6 +201,11 @@ function Rule(props) {
         return prevCheckedItems.filter(item => item !== value);
       }
     });
+  }
+
+  const handleFalseOutputCheck = (event)=>{
+    setFalseOutput(event.target.checked)
+    setFalseOutputValue("")
   }
 
   return (
@@ -233,7 +237,13 @@ function Rule(props) {
         </div>
         <div className="setOutputContainer">
           <div className='inputFieldContainer'>
+            <label>If True:</label>
             <AutocompleteInput options={outputOptions} setValue={setOutputValue}/>
+            <div>
+              <input type="checkbox" value={falseOutput} onChange={handleFalseOutputCheck}/>
+              <label>Display output when false</label>
+            </div>
+            {falseOutput && <input type="text" onChange={e=>setFalseOutputValue(e.target.value)}></input>}
             <GithubPicker onChange={setOutputColor} color={"#000000ff"} triangle='hide' width="163px"
               colors={["#000000ff", "#f44336", "#e9a21eff", "#2752b0ff", "#1d8122ff", "#7c6646ff"]}
             />

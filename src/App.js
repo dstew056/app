@@ -19,7 +19,7 @@ function App() {
     }
     
     setRuleList(prevList => [...prevList, { id: nextRuleId, section: section}]);
-    setOutputList(prevList => [...prevList, {id: nextRuleId, output: false, outputValue: "", outputColor: "#00000"}]);
+    setOutputList(prevList => [...prevList, {id: nextRuleId, output: false, falseOutput: false, falseOutputValue: "", outputValue: "", outputColor: "#00000"}]);
     setNextRuleId(prevId => prevId + 1);
   }
 
@@ -32,11 +32,11 @@ function App() {
     })
   }
 
-  const sendOutput = useCallback((id, output, outputValue, outputColor) => {
+  const sendOutput = useCallback((id, output, outputValue, falseOutput, falseOutputValue, outputColor) => {
     setOutputList(prevList => {
       return prevList.map(rule => {
         if (rule.id===id){
-          return {id,output,outputValue, outputColor}
+          return {id,output,outputValue, falseOutput, falseOutputValue, outputColor}
         }else{return rule}
       }
       )
@@ -84,15 +84,16 @@ function App() {
       <br/>
       <h4 className="output-container-label">Output:</h4>
       <div className='output-container'>
-        {outputList.map(outputData => (
+        {outputList.map(outputData => console.log(outputData) || (
           <div key={outputData.id}>
             <p 
               key={outputData.id} 
               id={outputData.id} 
-              className={"outputLine"+outputData.output} 
+              className={"outputLinetrue"} 
               style={{color: outputData.outputColor.hex}}
             >
-              {outputData.outputValue}
+              {outputData.output && outputData.outputValue}
+              {outputData.falseOutput && !outputData.output && outputData.falseOutputValue}
             </p>
           </div>
         ))}

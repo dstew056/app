@@ -19,6 +19,8 @@ function CombinationRule(props){
 
   const [output, setOutput] = useState("");//boolean, display output value if true
   const [outputValue, setOutputValue] = useState("");//value to be output
+  const [falseOutput, setFalseOutput] = useState(false)
+  const [falseOutputValue, setFalseOutputValue] = useState("")
   const [outputColor,setOutputColor] = useState("#000000");
   const [outputOptions,setOutputOptions] = useState([])
 
@@ -35,8 +37,8 @@ function CombinationRule(props){
   },[selectList,data])
 
   useEffect(() => {
-    sendOutput(id,output,outputValue,outputColor)
-  },[output,outputValue,id,outputColor,sendOutput]);
+    sendOutput(id,output,outputValue,falseOutput,falseOutputValue,outputColor)
+  },[output,outputValue,falseOutput,falseOutputValue,id,outputColor,sendOutput]);
 
   const addSelect = () =>{
     if(selectList.length>data.length-1){
@@ -48,6 +50,11 @@ function CombinationRule(props){
       {i:nextSelectId, rule:data[0].id}
     ])
     setNextSelectId(prevId=>prevId+1)
+  }
+
+  const handleFalseOutputCheck = (event)=>{
+    setFalseOutput(event.target.checked)
+    setFalseOutputValue("")
   }
 
   return(
@@ -76,6 +83,11 @@ function CombinationRule(props){
             <h4>output</h4>
             <div className='inputFieldContainer'>
               <AutocompleteInput options={outputOptions} setValue={setOutputValue}/>
+              <div>
+                <input type="checkbox" value={falseOutput} onChange={handleFalseOutputCheck}/>
+                <label>Display output when false</label>
+              </div>
+              {falseOutput && <input type="text" onChange={e=>setFalseOutputValue(e.target.value)}></input>}
               <GithubPicker onChange={setOutputColor} color={"#000000ff"} triangle='hide' width="163px"
                 colors={["#000000ff", "#f44336", "#e9a21eff", "#2752b0ff", "#1d8122ff", "#7c6646ff"]}
               />
