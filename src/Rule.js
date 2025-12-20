@@ -194,11 +194,12 @@ function Rule(props) {
   const changeSection = (event)=>{
     const {value, checked} = event.target;
 
+    console.log(section)
     setSection(prevCheckedItems => {
       if (checked) {
         return [...prevCheckedItems, value];
       } else {
-        return prevCheckedItems.filter(item => item !== value);
+        return (section.length === 1)? prevCheckedItems : prevCheckedItems.filter(item => item !== value);
       }
     });
   }
