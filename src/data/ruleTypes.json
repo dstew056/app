@@ -1,10 +1,12 @@
 {
     "Labs": {
         "name": {
-            "conditionValueType": "text"
+            "conditionValueType": "autocompleteText",
+            "autocompleteValues": "loincCodes"
         },
         "shortname": {
-            "conditionValueType": "text"
+            "conditionValueType": "autocompleteText",
+            "autocompleteValues": "loincCodes"
         },
         "value": {
             "conditionValueType": "number"
@@ -46,7 +48,8 @@
     },
     "Allergies": {
         "name": {
-            "conditionValueType": "text"
+            "conditionValueType": "autocompleteText",
+            "autocompleteValues": "loincCodes"
         },
         "severity": {
             "conditionValueType": "text"
@@ -71,7 +74,8 @@
     },
     "Conditions": {
         "name": {
-            "conditionValueType": "text"
+            "conditionValueType": "autocompleteText",
+            "autocompleteValues": "loincCodes"
         },
         "icd10": {
             "conditionValueType": "autocompleteText",
@@ -83,7 +87,8 @@
     },
     "Diagnoses": {
         "name": {
-            "conditionValueType": "text"
+            "conditionValueType": "autocompleteText",
+            "autocompleteValues": "loincCodes"
         },
         "icd10": {
             "conditionValueType": "autocompleteText",
@@ -95,7 +100,8 @@
     },
     "Procedures": {
         "name": {
-            "conditionValueType": "text"
+            "conditionValueType": "autocompleteText",
+            "autocompleteValues": "loincCodes"
         },
         "icd10": {
             "conditionValueType": "autocompleteText",
@@ -107,7 +113,8 @@
     },
     "Imaging": {
         "name": {
-            "conditionValueType": "text"
+            "conditionValueType": "autocompleteText",
+            "autocompleteValues": "loincCodes"
         },
         "icd10": {
             "conditionValueType": "autocompleteText",
@@ -122,7 +129,8 @@
     },
     "Miscellaneous": {
         "name": {
-            "conditionValueType": "text"
+            "conditionValueType": "autocompleteText",
+            "autocompleteValues": "loincCodes"
         },
         "icd10": {
             "conditionValueType": "autocompleteText",

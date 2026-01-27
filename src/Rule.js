@@ -46,6 +46,10 @@ function Rule(props) {
             return target.toLowerCase().includes(conditionValue_.toLowerCase());
           case "contains (case sensitive)":
             return target.includes(conditionValue_);
+          case "partially matches":
+            return target.toLowerCase().includes(conditionValue_.toLowerCase()) || conditionValue_.toLowerCase().includes(target.toLowerCase());
+          case "partially matches (case sensitive)":
+            return target.includes(conditionValue_) || conditionValue_.includes(target);
           case "is exactly":
             return target === conditionValue_;
           default:
